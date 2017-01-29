@@ -1,0 +1,52 @@
+import java.util.*;
+
+public class apriori {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Set<Integer> set = new HashSet<Integer>();
+		int n;
+		System.out.println("Enter the size of the set: ");
+		Scanner scanner = new Scanner(System.in);
+		n = scanner.nextInt();
+		try{
+			for(int i=0;i<n;i++){
+				set.add(i%5);				
+			}
+		//Set<Set<Integer>> power = powerSet(set);
+		
+		}catch(Exception e){
+			System.out.println(" Try failed");
+			e.printStackTrace();
+		}
+		
+		scanner.close();
+		
+	}
+	
+	public static <T> Set<Set<T>> powerSet(Set<T> originalSet) {
+	    Set<Set<T>> sets = new HashSet<Set<T>>();
+	    if (originalSet.isEmpty()) {
+	        sets.add(new HashSet<T>());
+	        return sets;
+	    }
+	    List<T> list = new ArrayList<T>(originalSet);
+	    T head = list.get(0);
+	    Set<T> rest = new HashSet<T>(list.subList(1, list.size())); 
+	    for (Set<T> set : powerSet(rest)) {
+	        Set<T> newSet = new HashSet<T>();
+	        newSet.add(head);
+	        newSet.addAll(set);
+	        sets.add(newSet);
+	        sets.add(set);
+	    }       
+	    return sets;
+	} 
+	
+	public static <T> Set<Set<T>> powerSet1(Set<T> originalSet){
+		Set<Set<T>>s = new HashSet<Set<T>>();
+		
+		return s;
+	}
+
+}
