@@ -20,7 +20,7 @@
 
 -   Frequency of items. Begin with 5 - 10 items but demo with a lot more (10,000)
 
--   | Item | Frequency |
+- | Item | Frequency |
     | ---- | --------- |
     | a    | 1         |
     | b    | 2         |
