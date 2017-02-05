@@ -4,11 +4,13 @@ import java.util.*;
 public class lab1 {
 
     public static void main(String[] args) {
-
-        float s = 5;
+        
         /* Support Threshold */
-        ItemsGenerator items = new ItemsGenerator(5, 0.2, 10000);
-        TransactionsGenerator transactions = new TransactionsGenerator(items, 10);
+        float s = 30;
+        int num_items_per_transaction = 10;
+        
+        ItemsGenerator items = new ItemsGenerator(5, 0.05, 1000);
+        TransactionsGenerator transactions = new TransactionsGenerator(items, num_items_per_transaction);
 
         /* Print all the generated items (with frequency) and all the transactions */
         System.out.println();
@@ -32,7 +34,7 @@ public class lab1 {
 
         }
         int flag = -1;
-        ArrayList<ArrayList<Integer>> ans = algo(new_inp, s, 10);
+        ArrayList<ArrayList<Integer>> ans = algo(new_inp, s, 10, num_items_per_transaction);
         for (int i = 1; i < ans.size(); i++) {
             if (!(flag == ans.get(i).size())) {
                 System.out.println();
@@ -48,7 +50,7 @@ public class lab1 {
 //		System.out.println("done");	
     }
 
-    public static ArrayList<ArrayList<Integer>> algo(ArrayList<Integer>[] inp, float threshold, int num) {
+    public static ArrayList<ArrayList<Integer>> algo(ArrayList<Integer>[] inp, float threshold, int num, int num_items_per_transaction) {
 
         int index_counter = 0;
         int max = (int) Math.pow(2, num);
@@ -90,7 +92,7 @@ public class lab1 {
         }
 
         ///////////////////////////////////////////////////////////
-        for (int k = 2; k < 6; k++) {
+        for (int k = 2; k < num_items_per_transaction; k++) {
 
             int numSubsets = factorial(selected1.get(0).size()) / (factorial(selected1.get(0).size() - k) * factorial(k));
 //            System.out.println("numSubsets = " + numSubsets);
