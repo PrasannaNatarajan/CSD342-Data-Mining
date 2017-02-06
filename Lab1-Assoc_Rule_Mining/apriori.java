@@ -51,8 +51,8 @@ public class lab1 {
         }
 	/*
 	for(int i=0;i<global_index;i++)
-		System.out.println("count of index "+i+" is: "+global_counter.get(i));
-		System.out.println("done");*/	
+		System.out.println("count of index "+i+" is: "+global_counter.get(i));*/
+		System.out.println("done");
     }
 
     public static ArrayList<ArrayList<Integer>> algo(ArrayList<Integer>[] inp, float threshold, int num, int num_items_per_transaction) {
