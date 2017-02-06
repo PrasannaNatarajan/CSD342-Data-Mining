@@ -2,10 +2,13 @@
 import java.util.*;
 
 public class lab1 {
+    private static ArrayList<Integer> global_counter;
+    private static int global_index;
 
     public static void main(String[] args) {
-        
-        /* Support Threshold */
+    	global_counter = new ArrayList<Integer>();
+        global_index=0;
+                /* Support Threshold */
         float s = 30;
         int num_items_per_transaction = 10;
         
@@ -43,11 +46,13 @@ public class lab1 {
             for (int j = 0; j < ans.get(i).size(); j++) {
                 System.out.print(ans.get(i).get(j) + " ");
             }
-            System.out.println("");
+            System.out.println("Count = "+global_counter.get((ans.get(0).size())+i-1));
             flag = ans.get(i).size();
         }
-
-//		System.out.println("done");	
+	/*
+	for(int i=0;i<global_index;i++)
+		System.out.println("count of index "+i+" is: "+global_counter.get(i));
+		System.out.println("done");*/	
     }
 
     public static ArrayList<ArrayList<Integer>> algo(ArrayList<Integer>[] inp, float threshold, int num, int num_items_per_transaction) {
@@ -78,6 +83,7 @@ public class lab1 {
             }
             if (c[i] >= threshold) {
                 temp.add(i);
+                global_counter.add(global_index++,c[i]);
             }
 
 //			System.out.println("temp.size = "+temp.size());
@@ -88,7 +94,7 @@ public class lab1 {
         System.out.println();
         System.out.println("Frequent 1-Itemsets are:");
         for (int j = 0; j < selected1.get(0).size(); j++) {
-            System.out.println(selected1.get(0).get(j));
+            System.out.println(selected1.get(0).get(j)+" Count =" + global_counter.get(j));
         }
 
         ///////////////////////////////////////////////////////////
@@ -119,6 +125,7 @@ public class lab1 {
             for (int p = 0; p < numSubsets; p++) {
                 if (counter[p] >= threshold) {
                     selected1.add(index_counter, subsets[p]);
+                    global_counter.add(global_index++,counter[p]);
                     index_counter++;
                 }
             }
@@ -332,3 +339,4 @@ class ItemsGenerator {
         System.out.println("generated quantity = " + generated_quantity);
     }
 }
+
