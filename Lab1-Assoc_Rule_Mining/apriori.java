@@ -2,17 +2,18 @@
 import java.util.*;
 
 public class lab1 {
+
     private static ArrayList<Integer> global_counter;
     private static int global_index;
 
     public static void main(String[] args) {
-    	global_counter = new ArrayList<Integer>();
-        global_index=0;
-                /* Support Threshold */
-        float s = 30;
+        global_counter = new ArrayList<Integer>();
+        global_index = 0;
+        /* Support Threshold */
+        float s = 5;
         int num_items_per_transaction = 10;
-        
-        ItemsGenerator items = new ItemsGenerator(5, 0.05, 1000);
+
+        ItemsGenerator items = new ItemsGenerator(20, -1, 1000);
         TransactionsGenerator transactions = new TransactionsGenerator(items, num_items_per_transaction);
 
         /* Print all the generated items (with frequency) and all the transactions */
@@ -41,18 +42,19 @@ public class lab1 {
         for (int i = 1; i < ans.size(); i++) {
             if (!(flag == ans.get(i).size())) {
                 System.out.println();
-                System.out.println("Frequent " + ans.get(i).size() + "-itemsets are:");
+                System.out.println("Frequent " + ans.get(i).size() + "-Itemsets are:");
             }
+//            System.out.print((i+1)+". ")
             for (int j = 0; j < ans.get(i).size(); j++) {
                 System.out.print(ans.get(i).get(j) + " ");
             }
-            System.out.println("Count = "+global_counter.get((ans.get(0).size())+i-1));
+            System.out.println(", support = " + global_counter.get((ans.get(0).size()) + i - 1));
             flag = ans.get(i).size();
         }
-	/*
+        /*
 	for(int i=0;i<global_index;i++)
 		System.out.println("count of index "+i+" is: "+global_counter.get(i));*/
-		System.out.println("done");
+//		System.out.println("done");
     }
 
     public static ArrayList<ArrayList<Integer>> algo(ArrayList<Integer>[] inp, float threshold, int num, int num_items_per_transaction) {
@@ -83,7 +85,7 @@ public class lab1 {
             }
             if (c[i] >= threshold) {
                 temp.add(i);
-                global_counter.add(global_index++,c[i]);
+                global_counter.add(global_index++, c[i]);
             }
 
 //			System.out.println("temp.size = "+temp.size());
@@ -94,7 +96,8 @@ public class lab1 {
         System.out.println();
         System.out.println("Frequent 1-Itemsets are:");
         for (int j = 0; j < selected1.get(0).size(); j++) {
-            System.out.println(selected1.get(0).get(j)+" Count =" + global_counter.get(j));
+//            System.out.print((j+1)+". ");
+            System.out.println(selected1.get(0).get(j) + ", support = " + global_counter.get(j));
         }
 
         ///////////////////////////////////////////////////////////
@@ -125,7 +128,7 @@ public class lab1 {
             for (int p = 0; p < numSubsets; p++) {
                 if (counter[p] >= threshold) {
                     selected1.add(index_counter, subsets[p]);
-                    global_counter.add(global_index++,counter[p]);
+                    global_counter.add(global_index++, counter[p]);
                     index_counter++;
                 }
             }
@@ -339,4 +342,3 @@ class ItemsGenerator {
         System.out.println("generated quantity = " + generated_quantity);
     }
 }
-
