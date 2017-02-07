@@ -1,19 +1,90 @@
 
 import java.util.*;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.ui.ApplicationFrame;
+import org.jfree.ui.RefineryUtilities;
+
+class BarChart_AWT extends ApplicationFrame {
+
+    public BarChart_AWT(String applicationTitle, String chartTitle) {
+        super(applicationTitle);
+        JFreeChart barChart = ChartFactory.createBarChart(
+                chartTitle,
+                "Frequent Itemsets",
+                "Support",
+                createDataset(),
+                PlotOrientation.VERTICAL,
+                true, true, false);
+
+        ChartPanel chartPanel = new ChartPanel(barChart);
+        chartPanel.setPreferredSize(new java.awt.Dimension(560, 367));
+        setContentPane(chartPanel);
+    }
+
+    private CategoryDataset createDataset() {
+
+        final DefaultCategoryDataset dataset
+                = new DefaultCategoryDataset();
+
+        for (int j = 0; j < lab1.selected1.get(0).size(); j++) {
+            dataset.addValue(lab1.global_counter.get(j), "{" + lab1.selected1.get(0).get(j) + "}", "Support");
+        }
+
+        for (int i = 1; i < lab1.ans.size(); i++) {
+            String set = "{";
+            for (int j = 0; j < lab1.ans.get(i).size(); j++) {
+                set = set + lab1.ans.get(i).get(j) + ",";
+            }
+            set = set + "}";
+            dataset.addValue(lab1.global_counter.get((lab1.ans.get(0).size()) + i - 1), set, "Support");
+        }
+
+//        System.out.println(", support = " + );
+//            flag = ans.get(i).size();
+//            
+//      dataset.addValue( 1.0 , fiat , speed );        
+//      dataset.addValue( 3.0 , fiat , userrating );        
+//      dataset.addValue( 5.0 , fiat , millage ); 
+//      dataset.addValue( 5.0 , fiat , safety );           
+//
+//      dataset.addValue( 5.0 , audi , speed );        
+//      dataset.addValue( 6.0 , audi , userrating );       
+//      dataset.addValue( 10.0 , audi , millage );        
+//      dataset.addValue( 4.0 , audi , safety );
+//
+//      dataset.addValue( 4.0 , ford , speed );        
+//      dataset.addValue( 2.0 , ford , userrating );        
+//      dataset.addValue( 3.0 , ford , millage );        
+//      dataset.addValue( 6.0 , ford , safety );               
+//
+        return dataset;
+    }
+}
 
 public class lab1 {
 
-    private static ArrayList<Integer> global_counter;
-    private static int global_index;
+    public static ArrayList<Integer> global_counter;
+    public static int global_index;
+    public static ArrayList<ArrayList<Integer>> ans;
+    public static ArrayList<ArrayList<Integer>> selected1;
 
     public static void main(String[] args) {
         global_counter = new ArrayList<Integer>();
         global_index = 0;
-        /* Support Threshold */
-        float s = 5;
-        int num_items_per_transaction = 10;
 
-        ItemsGenerator items = new ItemsGenerator(20, -1, 1000);
+        /* Input arguments */
+        int num_unique_items = 10;
+        int total_quantity = 10000;
+        int num_items_per_transaction = 10;
+        double zipf_factor = 0.05;
+        float s = 100;
+
+        ItemsGenerator items = new ItemsGenerator(num_unique_items, zipf_factor, total_quantity);
         TransactionsGenerator transactions = new TransactionsGenerator(items, num_items_per_transaction);
 
         /* Print all the generated items (with frequency) and all the transactions */
@@ -38,7 +109,7 @@ public class lab1 {
 
         }
         int flag = -1;
-        ArrayList<ArrayList<Integer>> ans = algo(new_inp, s, 10, num_items_per_transaction);
+        ans = algo(new_inp, s, num_unique_items, num_items_per_transaction);
         for (int i = 1; i < ans.size(); i++) {
             if (!(flag == ans.get(i).size())) {
                 System.out.println();
@@ -55,6 +126,11 @@ public class lab1 {
 	for(int i=0;i<global_index;i++)
 		System.out.println("count of index "+i+" is: "+global_counter.get(i));*/
 //		System.out.println("done");
+
+        BarChart_AWT chart = new BarChart_AWT("Apriori Algorithm", "Frequent itemsets vs Support");
+        chart.pack();
+        RefineryUtilities.centerFrameOnScreen(chart);
+        chart.setVisible(true);
     }
 
     public static ArrayList<ArrayList<Integer>> algo(ArrayList<Integer>[] inp, float threshold, int num, int num_items_per_transaction) {
@@ -66,7 +142,7 @@ public class lab1 {
             c[i] = 0;
         }
 
-        ArrayList<ArrayList<Integer>> selected1 = new ArrayList<ArrayList<Integer>>();
+        selected1 = new ArrayList<ArrayList<Integer>>();
 
         ArrayList<Integer> uniqueElements = new ArrayList(num);
         for (int i = 0; i < num; i++) {
