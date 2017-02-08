@@ -1,3 +1,8 @@
+/*
+
+
+*/
+
 import java.math.BigInteger;
 import java.util.*;
 import org.jfree.chart.ChartFactory;
@@ -11,6 +16,7 @@ import org.jfree.ui.RefineryUtilities;
 
 class BarChart_AWT extends ApplicationFrame {
 
+    // Class for plotting
     public BarChart_AWT(String applicationTitle, String chartTitle) {
         super(applicationTitle);
         JFreeChart barChart = ChartFactory.createBarChart(
@@ -44,24 +50,6 @@ class BarChart_AWT extends ApplicationFrame {
             dataset.addValue(lab1.global_counter.get((lab1.ans.get(0).size()) + i - 1), set, "Support");
         }
 
-//        System.out.println(", support = " + );
-//            flag = ans.get(i).size();
-//            
-//      dataset.addValue( 1.0 , fiat , speed );        
-//      dataset.addValue( 3.0 , fiat , userrating );        
-//      dataset.addValue( 5.0 , fiat , millage ); 
-//      dataset.addValue( 5.0 , fiat , safety );           
-//
-//      dataset.addValue( 5.0 , audi , speed );        
-//      dataset.addValue( 6.0 , audi , userrating );       
-//      dataset.addValue( 10.0 , audi , millage );        
-//      dataset.addValue( 4.0 , audi , safety );
-//
-//      dataset.addValue( 4.0 , ford , speed );        
-//      dataset.addValue( 2.0 , ford , userrating );        
-//      dataset.addValue( 3.0 , ford , millage );        
-//      dataset.addValue( 6.0 , ford , safety );               
-//
         return dataset;
     }
 }
@@ -109,31 +97,38 @@ public class lab1 {
 
         }
         int flag = -1;
+        /*Function call for running apriori algorithm with 
+        inputs : the transaction set, threshold, number_of_unique_items, number of items per transaction
+        outputs: the freuqent itemsets 
+        */
         ans = algo(new_inp, s, num_unique_items, num_items_per_transaction);
+        
+        /*Displaying the frequent item sets*/
         for (int i = 1; i < ans.size(); i++) {
             if (!(flag == ans.get(i).size())) {
                 System.out.println();
                 System.out.println("Frequent " + ans.get(i).size() + "-Itemsets are:");
             }
-//            System.out.print((i+1)+". ")
+
             for (int j = 0; j < ans.get(i).size(); j++) {
                 System.out.print(ans.get(i).get(j) + " ");
             }
             System.out.println(", support = " + global_counter.get((ans.get(0).size()) + i - 1));
             flag = ans.get(i).size();
         }
-        /*
-    for(int i=0;i<global_index;i++)
-        System.out.println("count of index "+i+" is: "+global_counter.get(i));*/
-      System.out.println("done");
 
+      System.out.println("done");
+        /* Calling BarChart class to plot the results*/
         BarChart_AWT chart = new BarChart_AWT("Apriori Algorithm", "Frequent itemsets vs Support");
         chart.pack();
         RefineryUtilities.centerFrameOnScreen(chart);
         chart.setVisible(true);
         
     }
-
+    /*Function : To perform Association Rule Minning using Apriori Algorithm
+        inputs : the transaction set, threshold, number_of_unique_items, number of items per transaction
+        outputs: the freuqent itemsets 
+        */
     public static ArrayList<ArrayList<Integer>> algo(ArrayList<Integer>[] inp, float threshold, int num, int num_items_per_transaction) {
 
         int index_counter = 0;
@@ -149,6 +144,7 @@ public class lab1 {
         for (int i = 0; i < num; i++) {
             uniqueElements.add(i, i);//[i]=i;
         }
+        /* For Item Set*/
         //////////////////////////////////////////////////////////
         int i = 0;
         ArrayList<Integer> temp = new ArrayList<>();
@@ -157,15 +153,12 @@ public class lab1 {
             for (int j = 0; j < inp.length; j++) {
                 if (inp[j].contains(i)) {
                     c[i]++;
-//                  System.out.println("The count of "+i+" is:"+c[i]);
                 }
             }
             if (c[i] >= threshold) {
                 temp.add(i);
                 global_counter.add(global_index++, c[i]);
             }
-
-//          System.out.println("temp.size = "+temp.size());
             i++;
         }
         selected1.add(index_counter, temp);
@@ -173,11 +166,12 @@ public class lab1 {
         System.out.println();
         System.out.println("Frequent 1-Itemsets are:");
         for (int j = 0; j < selected1.get(0).size(); j++) {
-//            System.out.print((j+1)+". ");
             System.out.println(selected1.get(0).get(j) + ", support = " + global_counter.get(j));
         }
 
         ///////////////////////////////////////////////////////////
+        
+        /*For k item sets*/
         for (int k = 2; k < num_items_per_transaction; k++) {
             
             BigInteger real_fac = factorial(BigInteger.valueOf(selected1.get(0).size())).divide((factorial(BigInteger.valueOf(selected1.get(0).size() - k)).multiply(factorial(BigInteger.valueOf(k)))));
@@ -194,12 +188,8 @@ public class lab1 {
 
             for (int q = 0; q < inp.length; q++) {
                 for (int p = 0; p < numSubsets; p++) {
-                    //System.out.println("subsets = "+subsets[p]);
-                    //System.out.println("inp["+q+"] = "+inp[q]);
-                    //System.out.println("inp[q].containsAll(subsets[p]) = "+subsets[p].containsAll(inp[q]));
                     if (inp[q].containsAll(subsets[p])) {
                         counter[p]++;
-                        //System.out.println("counter["+p+"] = "+counter[p]);
                     }
 
                 }
@@ -212,10 +202,6 @@ public class lab1 {
                 }
             }
         }
-
-        //for(int j=0;j<index_counter;j++){
-        //System.out.println("j = "+j+" "+selected1.get(j).size());
-        //}
         return selected1;
     }
 
