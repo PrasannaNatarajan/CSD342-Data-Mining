@@ -1,4 +1,4 @@
-
+import java.math.BigInteger;
 import java.util.*;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -78,8 +78,8 @@ public class lab1 {
         global_index = 0;
 
         /* Input arguments */
-        int num_unique_items = 10;
-        int total_quantity = 10000;
+        int num_unique_items = 15;
+        int total_quantity = 100000;
         int num_items_per_transaction = 10;
         double zipf_factor = 0.05;
         float s = 100;
@@ -123,20 +123,21 @@ public class lab1 {
             flag = ans.get(i).size();
         }
         /*
-	for(int i=0;i<global_index;i++)
-		System.out.println("count of index "+i+" is: "+global_counter.get(i));*/
-//		System.out.println("done");
+    for(int i=0;i<global_index;i++)
+        System.out.println("count of index "+i+" is: "+global_counter.get(i));*/
+      System.out.println("done");
 
         BarChart_AWT chart = new BarChart_AWT("Apriori Algorithm", "Frequent itemsets vs Support");
         chart.pack();
         RefineryUtilities.centerFrameOnScreen(chart);
         chart.setVisible(true);
+        
     }
 
     public static ArrayList<ArrayList<Integer>> algo(ArrayList<Integer>[] inp, float threshold, int num, int num_items_per_transaction) {
 
         int index_counter = 0;
-        int max = (int) Math.pow(2, num);
+        //int max = (int) Math.pow(2, num);
         int c[] = new int[num];
         for (int i = 0; i < num; i++) {
             c[i] = 0;
@@ -156,7 +157,7 @@ public class lab1 {
             for (int j = 0; j < inp.length; j++) {
                 if (inp[j].contains(i)) {
                     c[i]++;
-//					System.out.println("The count of "+i+" is:"+c[i]);
+//                  System.out.println("The count of "+i+" is:"+c[i]);
                 }
             }
             if (c[i] >= threshold) {
@@ -164,7 +165,7 @@ public class lab1 {
                 global_counter.add(global_index++, c[i]);
             }
 
-//			System.out.println("temp.size = "+temp.size());
+//          System.out.println("temp.size = "+temp.size());
             i++;
         }
         selected1.add(index_counter, temp);
@@ -178,9 +179,11 @@ public class lab1 {
 
         ///////////////////////////////////////////////////////////
         for (int k = 2; k < num_items_per_transaction; k++) {
-
-            int numSubsets = factorial(selected1.get(0).size()) / (factorial(selected1.get(0).size() - k) * factorial(k));
-//            System.out.println("numSubsets = " + numSubsets);
+            
+            BigInteger real_fac = factorial(BigInteger.valueOf(selected1.get(0).size())).divide((factorial(BigInteger.valueOf(selected1.get(0).size() - k)).multiply(factorial(BigInteger.valueOf(k)))));
+            int numSubsets = real_fac.intValue();
+            
+            System.out.println("numSubsets = " + numSubsets + ","+ real_fac);
             int[] counter = new int[numSubsets];
             for (int p = 0; p < numSubsets; p++) {
                 counter[p] = 0;
@@ -216,12 +219,12 @@ public class lab1 {
         return selected1;
     }
 
-    public static int factorial(int fac) {
-        if (fac <= 1) {
-            return 1;
+    public static BigInteger factorial(BigInteger fac) {
+        if (fac.compareTo(new BigInteger("1")) ==-1) {
+            return new BigInteger("1");
         }
 
-        return (int) (fac * factorial(fac - 1));
+        return (fac.multiply(factorial(fac.subtract(new BigInteger("1")))));
     }
 
     public static ArrayList<Integer>[] getSubsetWrapper(int numSubsets, ArrayList<Integer> input, int[] subset, int k) {
@@ -275,13 +278,10 @@ public class lab1 {
 /*-------------------------------------------------------------------------------------------------------------------
 DESCRIPTION: 
 Class to generate simulated transactions with normally distributed number of items in each transaction.
-
 USAGE: TransactionsGenerator transactions = new TransactionsGenerator(ItemsGenerator items, int num_item_range);
 EXAMPLE: ItemsGenerator items = new ItemsGenerator(items, 5);
-
 items = ItemsGenerator object containing generated possible items.
 num_item_range = upper bound of nmber of items to generate in one transaction.
-
 transactions = List of Lists containing items of each transaction as a row.
 ----------------------------------------------------------------------------------------------------------------------*/
 class TransactionsGenerator {
@@ -344,15 +344,11 @@ class TransactionsGenerator {
 /*-------------------------------------------------------------------------------------------------------------------
 DESCRIPTION: 
 Class to generate simulated dataset containing N*Q number of items as an ArrayList[item_id] = quantity.
-
 N = number of items
 Q = total quantity of all items
-
 USAGE: ItemsGenerator items = new ItemsGenerator(size, skew, quantity);
 EXAMPLE: ItemsGenerator items = new ItemsGenerator(50, 0.5, 1000);
-
 frequency_map is ArrayList containing frequency of item index i.
-
 size = number of unique items
 skew = zipf skew. 0 -> equally distributed. 10 -> opposite.
 quantity = total quantity of all items inclusive
