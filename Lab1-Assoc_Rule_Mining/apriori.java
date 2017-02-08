@@ -1,5 +1,13 @@
 /*
-
+This is the submission for the graded lab assignment #1, which consists of implementation of Association Rule Minning using Apriori algorithms.
+The algorithm has been implemented in Java v1.7.
+This implementation has been successfully tested for up to 1000000 elements. 
+Inputs  : 
+Outputs : 
+AUTHORS
+Atish Majumdar 	    : 1410110081
+Prasanna Natarajan  : 1410110298
+Vishal Guaba        : 1410110505
 
 */
 
