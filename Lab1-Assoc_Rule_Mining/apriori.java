@@ -1,20 +1,15 @@
 /*
  This is the submission for the graded lab assignment #1, which consists of implementation of Association Rule Minning using Apriori algorithms.
  The algorithm has been implemented in Java v1.7.
- This implementation has been successfully tested for up to 1000000 Transactions. 
- Inputs  : int num_unique_items = Taken as input with -n flag from the terminal.     
-           total_quantity = Taken as input with -q flag from the terminal.        
-           num_items_per_transaction = Taken as input with -i flag from the terminal. 
-           zipf_factor = Taken as input with -zf flag from the terminal.          
-           s = Taken as input with -s flag from the terminal.						                
+ This implementation has been successfully tested for up to 1000000 elements. 
+ Inputs  : 
  Outputs : 
  AUTHORS
  Atish Majumdar      : 1410110081
  Prasanna Natarajan  : 1410110298
  Vishal Guaba        : 1410110501
 */
-import java.io.FileWriter;
-import java.io.IOException;
+
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.math.BigInteger;
@@ -36,52 +31,38 @@ public class lab1 {
     public static int global_index;
     public static ArrayList<ArrayList<Integer>> ans;
     public static ArrayList<ArrayList<Integer>> selected1;
-
+    public static String[] item_names;
+    
     public static void main(String[] args) {
         global_counter = new ArrayList<Integer>();
         global_index = 0;
 
-       /* Input arguments */
-        int num_unique_items = 15;          //n
-        int total_quantity = 100000;        //q
-        int num_items_per_transaction = 10; //i
-        double zipf_factor = 0.05;          //zf
-        float s = 100;						                //s
-
-       /* Parsing the input parameters*/
-       for(int i=0;i<args.length;i++){
-        	
-        	switch(args[i]){
-        	case "-n" : num_unique_items = Integer.parseInt(args[++i]);break;
-        	case "-q" : total_quantity = Integer.parseInt(args[++i]);break;
-        	case "-i" : num_items_per_transaction = Integer.parseInt(args[++i]);break;
-        	case "-zf": zipf_factor = Double.parseDouble(args[++i]);break;
-        	case "-s" : s = Float.parseFloat(args[++i]);break; 
-        	default : break;
-        	}
-        }
-       /*Printing the parsed input parameters*/
-        System.out.println("The input params are: s="+s+" zipf_factor = "+zipf_factor+
-        		" num_items_per_trans = "+num_items_per_transaction+" total_quantity = "+total_quantity+" " +
-        				"num_unique_items = "+num_unique_items);
-     
-     
+        /* Input arguments */
+        int num_unique_items = 50;
+        int total_quantity = 30000;
+        int num_items_per_transaction = 7;
+        double zipf_factor = 0.5;
+        float s = 50;
+        
+        item_names = CSVReader.readFile("C:\\Users\\vishg\\Documents\\git\\Sem-6\\DataMining\\Apriori\\src\\items.csv");
+//        for(int i=0; i<item_names.length; i++){
+//            System.out.println(item_names[i]);
+//        }
+        
         ItemsGenerator items = new ItemsGenerator(num_unique_items, zipf_factor, total_quantity);
         TransactionsGenerator transactions = new TransactionsGenerator(items, num_items_per_transaction);
 
         /* Print all the generated items (with frequency) and all the transactions */
-        System.out.println();
+        System.out.println();System.out.println();
         System.out.println("Transactions generated are:");
         for (int i = 0; i < transactions.transactions.size(); i++) {
             System.out.print((i + 1) + ". ");
             // System.out.print((transactions.transactions.get(i).size()));
             for (int j = 0; j < transactions.transactions.get(i).size(); j++) {
-                System.out.print(transactions.transactions.get(i).get(j) + " ");
+                System.out.print(item_names[transactions.transactions.get(i).get(j)] + ", ");
             }
             System.out.println();
         }
-     
-     
 
         /* Copy transactions from List<List> to Array of ArrayLists (refactor later!) */
         ArrayList<Integer> new_inp[] = new ArrayList[transactions.transactions.size()];
@@ -102,35 +83,17 @@ public class lab1 {
         /*Displaying the frequent item sets*/
         for (int i = 1; i < ans.size(); i++) {
             if (!(flag == ans.get(i).size())) {
-                System.out.println();
+                System.out.println();System.out.println();
                 System.out.println("Frequent " + ans.get(i).size() + "-Itemsets are:");
             }
 
             for (int j = 0; j < ans.get(i).size(); j++) {
-                System.out.print(ans.get(i).get(j) + " ");
+                System.out.print(item_names[ans.get(i).get(j)] + ", ");
             }
-            System.out.println(", support = " + global_counter.get((ans.get(0).size()) + i - 1));
+            System.out.println(" support = " + global_counter.get((ans.get(0).size()) + i - 1));
             flag = ans.get(i).size();
         }
-        String outputFile = "output.csv";
-        try {
-			        FileWriter writer = new FileWriter(outputFile);
-			        CSVUtil.writeLine(writer, Arrays.asList("Item Sets","Threshold"),',');
-           for (int i = 1; i < lab1.ans.size(); i++) {
-                     String set = "{";
-                     for (int j = 0; j < lab1.ans.get(i).size(); j++) {
-                         set = set + lab1.ans.get(i).get(j) + " ";
-                     }
-                     set = set.trim() + "}";
-                     CSVUtil.writeLine(writer, Arrays.asList(set.trim(),global_counter.get((lab1.ans.get(0).size()) + i - 1).toString()),',');
-                     System.out.println(set+global_counter.get((lab1.ans.get(0).size()) + i - 1).toString());
-                     writer.flush();
-                 }
-           writer.close();
-           } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-           }
+
         System.out.println("done");
         /* Calling BarChart class to plot the results*/
         BarChart_AWT chart = new BarChart_AWT("Apriori Algorithm", "Frequent itemsets vs Support");
@@ -178,10 +141,10 @@ public class lab1 {
         }
         selected1.add(index_counter, temp);
         index_counter++;
-        System.out.println();
+        System.out.println();System.out.println();
         System.out.println("Frequent 1-Itemsets are:");
         for (int j = 0; j < selected1.get(0).size(); j++) {
-            System.out.println(selected1.get(0).get(j) + ", support = " + global_counter.get(j));
+            System.out.println(item_names[selected1.get(0).get(j)] + " support = " + global_counter.get(j));
         }
 
         ///////////////////////////////////////////////////////////
@@ -407,7 +370,7 @@ class ItemsGenerator {
         for (i = 1; i <= this.size; i++) {
             quant_item = (int) ((this.getProbability(i)) * (this.quantity));
             frequency_map.add(i - 1, quant_item);
-            System.out.println(i - 1 + " " + quant_item);
+            System.out.println(lab1.item_names[i - 1] + " " + quant_item);
             generated_quantity = generated_quantity + quant_item;
         }
         System.out.println("given quantity = " + this.quantity);
@@ -474,7 +437,7 @@ class BarChart_AWT extends ApplicationFrame {
         for (int i = 1; i < lab1.ans.size(); i++) {
             String set = "{";
             for (int j = 0; j < lab1.ans.get(i).size(); j++) {
-                set = set + lab1.ans.get(i).get(j) + ",";
+                set = set + lab1.item_names[lab1.ans.get(i).get(j)] + ",";
             }
             set = set + "}";
             dataset.addValue(lab1.global_counter.get((lab1.ans.get(0).size()) + i - 1), "ItemSets", set);
