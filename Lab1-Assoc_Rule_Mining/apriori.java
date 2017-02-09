@@ -48,44 +48,18 @@ public class lab1 {
         float s = 100;						                //s
 
        /* Parsing the input parameters*/
-        for(int i=0;i<args.length;i++){
-        	if(args[i].contains("-n")){
-        		//System.out.println(args[i+1]);
-          i++;
-        		num_unique_items = Integer.parseInt(args[i]);
-        		continue;
-        		//System.exit(1);
-        	}
-        	if(args[i].contains("-q")){
-        		//System.out.println(args[i+1]);
-          i++;
-        		total_quantity = Integer.parseInt(args[i]);
-        		continue;
-        		//System.exit(1);
-        	}
-        	if(args[i].contains("-i")){
-        		//System.out.println(args[i+1]);
-          i++;
-        		num_items_per_transaction = Integer.parseInt(args[i]);
-        		continue;
-        		//System.exit(1);
-        	}
-        	if(args[i].contains("-zf")){
-        		//System.out.println(args[i+1]);
-          i++;
-        		zipf_factor = Double.parseDouble(args[i]);
-        		continue;
-        		//System.exit(1);
-        	}
-        	if(args[i].contains("-s")){
-        		//System.out.println(args[i+1]);
-          i++;
-        		s = Float.parseFloat(args[i]);
-        		continue;
-        		//System.exit(1);
+       for(int i=0;i<args.length;i++){
+        	
+        	switch(args[i]){
+        	case "-n" : num_unique_items = Integer.parseInt(args[++i]);break;
+        	case "-q" : total_quantity = Integer.parseInt(args[++i]);break;
+        	case "-i" : num_items_per_transaction = Integer.parseInt(args[++i]);break;
+        	case "-zf": zipf_factor = Double.parseDouble(args[++i]);break;
+        	case "-s" : s = Float.parseFloat(args[++i]);break; 
+        	default : break;
         	}
         }
-        /*Printing the parsed input parameters*/
+       /*Printing the parsed input parameters*/
         System.out.println("The input params are: s="+s+" zipf_factor = "+zipf_factor+
         		" num_items_per_trans = "+num_items_per_transaction+" total_quantity = "+total_quantity+" " +
         				"num_unique_items = "+num_unique_items);
