@@ -36,13 +36,57 @@ public class lab1 {
         global_counter = new ArrayList<Integer>();
         global_index = 0;
 
-        /* Input arguments */
-        int num_unique_items = 50;
-        int total_quantity = 30000;
-        int num_items_per_transaction = 7;
-        double zipf_factor = 0.5;
-        float s = 50;
+       /* Input arguments */
+        int num_unique_items = 15;          //n
+        int total_quantity = 100000;        //q
+        int num_items_per_transaction = 10; //i
+        double zipf_factor = 0.05;          //zf
+        float s = 100;						                //s
 
+       /* Parsing the input parameters*/
+        for(int i=0;i<args.length;i++){
+        	if(args[i].contains("-n")){
+        		//System.out.println(args[i+1]);
+          i++;
+        		num_unique_items = Integer.parseInt(args[i]);
+        		continue;
+        		//System.exit(1);
+        	}
+        	if(args[i].contains("-q")){
+        		//System.out.println(args[i+1]);
+          i++;
+        		total_quantity = Integer.parseInt(args[i]);
+        		continue;
+        		//System.exit(1);
+        	}
+        	if(args[i].contains("-i")){
+        		//System.out.println(args[i+1]);
+          i++;
+        		num_items_per_transaction = Integer.parseInt(args[i]);
+        		continue;
+        		//System.exit(1);
+        	}
+        	if(args[i].contains("-zf")){
+        		//System.out.println(args[i+1]);
+          i++;
+        		zipf_factor = Double.parseDouble(args[i]);
+        		continue;
+        		//System.exit(1);
+        	}
+        	if(args[i].contains("-s")){
+        		//System.out.println(args[i+1]);
+          i++;
+        		s = Float.parseFloat(args[i]);
+        		continue;
+        		//System.exit(1);
+        	}
+        }
+        /*Printing the parsed input parameters*/
+        System.out.println("The input params are: s="+s+" zipf_factor = "+zipf_factor+
+        		" num_items_per_trans = "+num_items_per_transaction+" total_quantity = "+total_quantity+" " +
+        				"num_unique_items = "+num_unique_items);
+     
+     
         ItemsGenerator items = new ItemsGenerator(num_unique_items, zipf_factor, total_quantity);
         TransactionsGenerator transactions = new TransactionsGenerator(items, num_items_per_transaction);
 
@@ -57,6 +101,8 @@ public class lab1 {
             }
             System.out.println();
         }
+     
+     
 
         /* Copy transactions from List<List> to Array of ArrayLists (refactor later!) */
         ArrayList<Integer> new_inp[] = new ArrayList[transactions.transactions.size()];
