@@ -1,66 +1,29 @@
 /*
-This is the submission for the graded lab assignment #1, which consists of implementation of Association Rule Minning using Apriori algorithms.
-The algorithm has been implemented in Java v1.7.
-This implementation has been successfully tested for up to 1000000 elements. 
-Inputs  : 
-Outputs : 
-AUTHORS
-Atish Majumdar 	    : 1410110081
-Prasanna Natarajan  : 1410110298
-Vishal Guaba        : 1410110505
-
+ This is the submission for the graded lab assignment #1, which consists of implementation of Association Rule Minning using Apriori algorithms.
+ The algorithm has been implemented in Java v1.7.
+ This implementation has been successfully tested for up to 1000000 elements. 
+ Inputs  : 
+ Outputs : 
+ AUTHORS
+ Atish Majumdar      : 1410110081
+ Prasanna Natarajan  : 1410110298
+ Vishal Guaba        : 1410110501
 */
 
+import java.awt.Color;
+import java.awt.GradientPaint;
 import java.math.BigInteger;
 import java.util.*;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
-
-class BarChart_AWT extends ApplicationFrame {
-
-    // Class for plotting
-    public BarChart_AWT(String applicationTitle, String chartTitle) {
-        super(applicationTitle);
-        JFreeChart barChart = ChartFactory.createBarChart(
-                chartTitle,
-                "Frequent Itemsets",
-                "Support",
-                createDataset(),
-                PlotOrientation.VERTICAL,
-                true, true, false);
-
-        ChartPanel chartPanel = new ChartPanel(barChart);
-        chartPanel.setPreferredSize(new java.awt.Dimension(560, 367));
-        setContentPane(chartPanel);
-    }
-
-    private CategoryDataset createDataset() {
-
-        final DefaultCategoryDataset dataset
-                = new DefaultCategoryDataset();
-
-        for (int j = 0; j < lab1.selected1.get(0).size(); j++) {
-            dataset.addValue(lab1.global_counter.get(j), "{" + lab1.selected1.get(0).get(j) + "}", "Support");
-        }
-
-        for (int i = 1; i < lab1.ans.size(); i++) {
-            String set = "{";
-            for (int j = 0; j < lab1.ans.get(i).size(); j++) {
-                set = set + lab1.ans.get(i).get(j) + ",";
-            }
-            set = set + "}";
-            dataset.addValue(lab1.global_counter.get((lab1.ans.get(0).size()) + i - 1), set, "Support");
-        }
-
-        return dataset;
-    }
-}
 
 public class lab1 {
 
@@ -74,11 +37,11 @@ public class lab1 {
         global_index = 0;
 
         /* Input arguments */
-        int num_unique_items = 15;
-        int total_quantity = 100000;
-        int num_items_per_transaction = 10;
-        double zipf_factor = 0.05;
-        float s = 100;
+        int num_unique_items = 50;
+        int total_quantity = 30000;
+        int num_items_per_transaction = 7;
+        double zipf_factor = 0.5;
+        float s = 50;
 
         ItemsGenerator items = new ItemsGenerator(num_unique_items, zipf_factor, total_quantity);
         TransactionsGenerator transactions = new TransactionsGenerator(items, num_items_per_transaction);
@@ -106,11 +69,11 @@ public class lab1 {
         }
         int flag = -1;
         /*Function call for running apriori algorithm with 
-        inputs : the transaction set, threshold, number_of_unique_items, number of items per transaction
-        outputs: the freuqent itemsets 
-        */
-        ans = algo(new_inp, s, num_unique_items, num_items_per_transaction);
-        
+         inputs : the transaction set, threshold, number_of_unique_items, number of items per transaction
+         outputs: the freuqent itemsets 
+         */
+        ans = algo(new_inp, s, num_unique_items, 5);
+
         /*Displaying the frequent item sets*/
         for (int i = 1; i < ans.size(); i++) {
             if (!(flag == ans.get(i).size())) {
@@ -125,18 +88,19 @@ public class lab1 {
             flag = ans.get(i).size();
         }
 
-      System.out.println("done");
+        System.out.println("done");
         /* Calling BarChart class to plot the results*/
         BarChart_AWT chart = new BarChart_AWT("Apriori Algorithm", "Frequent itemsets vs Support");
         chart.pack();
         RefineryUtilities.centerFrameOnScreen(chart);
         chart.setVisible(true);
-        
+
     }
     /*Function : To perform Association Rule Minning using Apriori Algorithm
-        inputs : the transaction set, threshold, number_of_unique_items, number of items per transaction
-        outputs: the freuqent itemsets 
-        */
+     inputs : the transaction set, threshold, number_of_unique_items, number of items per transaction
+     outputs: the freuqent itemsets 
+     */
+
     public static ArrayList<ArrayList<Integer>> algo(ArrayList<Integer>[] inp, float threshold, int num, int num_items_per_transaction) {
 
         int index_counter = 0;
@@ -178,14 +142,13 @@ public class lab1 {
         }
 
         ///////////////////////////////////////////////////////////
-        
         /*For k item sets*/
         for (int k = 2; k < num_items_per_transaction; k++) {
-            
+
             BigInteger real_fac = factorial(BigInteger.valueOf(selected1.get(0).size())).divide((factorial(BigInteger.valueOf(selected1.get(0).size() - k)).multiply(factorial(BigInteger.valueOf(k)))));
             int numSubsets = real_fac.intValue();
-            
-            System.out.println("numSubsets = " + numSubsets + ","+ real_fac);
+
+            System.out.println("numSubsets = " + numSubsets + "," + real_fac);
             int[] counter = new int[numSubsets];
             for (int p = 0; p < numSubsets; p++) {
                 counter[p] = 0;
@@ -214,7 +177,7 @@ public class lab1 {
     }
 
     public static BigInteger factorial(BigInteger fac) {
-        if (fac.compareTo(new BigInteger("1")) ==-1) {
+        if (fac.compareTo(new BigInteger("1")) == -1) {
             return new BigInteger("1");
         }
 
@@ -270,14 +233,14 @@ public class lab1 {
 }
 
 /*-------------------------------------------------------------------------------------------------------------------
-DESCRIPTION: 
-Class to generate simulated transactions with normally distributed number of items in each transaction.
-USAGE: TransactionsGenerator transactions = new TransactionsGenerator(ItemsGenerator items, int num_item_range);
-EXAMPLE: ItemsGenerator items = new ItemsGenerator(items, 5);
-items = ItemsGenerator object containing generated possible items.
-num_item_range = upper bound of nmber of items to generate in one transaction.
-transactions = List of Lists containing items of each transaction as a row.
-----------------------------------------------------------------------------------------------------------------------*/
+ DESCRIPTION: 
+ Class to generate simulated transactions with normally distributed number of items in each transaction.
+ USAGE: TransactionsGenerator transactions = new TransactionsGenerator(ItemsGenerator items, int num_item_range);
+ EXAMPLE: ItemsGenerator items = new ItemsGenerator(items, 5);
+ items = ItemsGenerator object containing generated possible items.
+ num_item_range = upper bound of nmber of items to generate in one transaction.
+ transactions = List of Lists containing items of each transaction as a row.
+ ----------------------------------------------------------------------------------------------------------------------*/
 class TransactionsGenerator {
 
     private ItemsGenerator items;
@@ -336,17 +299,17 @@ class TransactionsGenerator {
 
 
 /*-------------------------------------------------------------------------------------------------------------------
-DESCRIPTION: 
-Class to generate simulated dataset containing N*Q number of items as an ArrayList[item_id] = quantity.
-N = number of items
-Q = total quantity of all items
-USAGE: ItemsGenerator items = new ItemsGenerator(size, skew, quantity);
-EXAMPLE: ItemsGenerator items = new ItemsGenerator(50, 0.5, 1000);
-frequency_map is ArrayList containing frequency of item index i.
-size = number of unique items
-skew = zipf skew. 0 -> equally distributed. 10 -> opposite.
-quantity = total quantity of all items inclusive
--------------------------------------------------------------------------------------------------------------------*/
+ DESCRIPTION: 
+ Class to generate simulated dataset containing N*Q number of items as an ArrayList[item_id] = quantity.
+ N = number of items
+ Q = total quantity of all items
+ USAGE: ItemsGenerator items = new ItemsGenerator(size, skew, quantity);
+ EXAMPLE: ItemsGenerator items = new ItemsGenerator(50, 0.5, 1000);
+ frequency_map is ArrayList containing frequency of item index i.
+ size = number of unique items
+ skew = zipf skew. 0 -> equally distributed. 10 -> opposite.
+ quantity = total quantity of all items inclusive
+ -------------------------------------------------------------------------------------------------------------------*/
 class ItemsGenerator {
 
     private Random rnd = new Random(System.currentTimeMillis());
@@ -406,5 +369,73 @@ class ItemsGenerator {
         }
         System.out.println("given quantity = " + this.quantity);
         System.out.println("generated quantity = " + generated_quantity);
+    }
+}
+
+/*-------------------------------------------------------------------------------------------------------------------
+ DESCRIPTION: 
+
+ Visualisation!!!!!!
+ -------------------------------------------------------------------------------------------------------------------*/
+class BarChart_AWT extends ApplicationFrame {
+
+    public BarChart_AWT(String applicationTitle, String chartTitle) {
+        super(applicationTitle);
+        JFreeChart barChart = ChartFactory.createBarChart(
+                chartTitle,
+                "Frequent Itemsets",
+                "Support",
+                createDataset(),
+                PlotOrientation.VERTICAL,
+                true, true, false);
+
+        // get a reference to the plot for further customisation...
+        final CategoryPlot plot = barChart.getCategoryPlot();
+        plot.setBackgroundPaint(Color.lightGray);
+        plot.setDomainGridlinePaint(Color.white);
+        plot.setRangeGridlinePaint(Color.white);
+        final BarRenderer renderer = (BarRenderer) plot.getRenderer();
+        renderer.setDrawBarOutline(false);
+
+        // set up gradient paints for series...
+        final GradientPaint gp0 = new GradientPaint(
+                0.0f, 0.0f, Color.blue,
+                0.0f, 0.0f, Color.lightGray
+        );
+        final GradientPaint gp1 = new GradientPaint(
+                0.0f, 0.0f, Color.green,
+                0.0f, 0.0f, Color.lightGray
+        );
+        final GradientPaint gp2 = new GradientPaint(
+                0.0f, 0.0f, Color.red,
+                0.0f, 0.0f, Color.lightGray
+        );
+        renderer.setSeriesPaint(0, gp0);
+        renderer.setSeriesPaint(1, gp1);
+        renderer.setSeriesPaint(2, gp2);
+
+        ChartPanel chartPanel = new ChartPanel(barChart);
+        chartPanel.setPreferredSize(new java.awt.Dimension(560, 367));
+        setContentPane(chartPanel);
+    }
+
+    private CategoryDataset createDataset() {
+
+        final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+        /* Code to show 1-Item Frequent Itemsets*/
+//        for (int j = 0; j < lab1.selected1.get(0).size(); j++) {
+//            dataset.addValue(lab1.global_counter.get(j), "{" + lab1.selected1.get(0).get(j) + "}", "Support");
+//        }
+        /* Code to show all other frequent Itemsets*/
+        for (int i = 1; i < lab1.ans.size(); i++) {
+            String set = "{";
+            for (int j = 0; j < lab1.ans.get(i).size(); j++) {
+                set = set + lab1.ans.get(i).get(j) + ",";
+            }
+            set = set + "}";
+            dataset.addValue(lab1.global_counter.get((lab1.ans.get(0).size()) + i - 1), "ItemSets", set);
+        }
+        return dataset;
     }
 }
