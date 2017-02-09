@@ -13,7 +13,8 @@
  Prasanna Natarajan  : 1410110298
  Vishal Guaba        : 1410110501
 */
-
+import java.io.FileWriter;
+import java.io.IOException;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.math.BigInteger;
@@ -111,7 +112,25 @@ public class lab1 {
             System.out.println(", support = " + global_counter.get((ans.get(0).size()) + i - 1));
             flag = ans.get(i).size();
         }
-
+        String outputFile = "output.csv";
+        try {
+			        FileWriter writer = new FileWriter(outputFile);
+			        CSVUtil.writeLine(writer, Arrays.asList("Item Sets","Threshold"),',');
+           for (int i = 1; i < lab1.ans.size(); i++) {
+                     String set = "{";
+                     for (int j = 0; j < lab1.ans.get(i).size(); j++) {
+                         set = set + lab1.ans.get(i).get(j) + " ";
+                     }
+                     set = set.trim() + "}";
+                     CSVUtil.writeLine(writer, Arrays.asList(set.trim(),global_counter.get((lab1.ans.get(0).size()) + i - 1).toString()),',');
+                     System.out.println(set+global_counter.get((lab1.ans.get(0).size()) + i - 1).toString());
+                     writer.flush();
+                 }
+           writer.close();
+           } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+           }
         System.out.println("done");
         /* Calling BarChart class to plot the results*/
         BarChart_AWT chart = new BarChart_AWT("Apriori Algorithm", "Frequent itemsets vs Support");
