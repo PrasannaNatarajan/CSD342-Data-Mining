@@ -1,6 +1,53 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
+
+
+
+class CSVReader {
+
+    public static String[] readFile(String csvfile) {
+
+        String csvFile = csvfile;
+        BufferedReader br = null;
+        String line = "";
+        String cvsSplitBy = ",";
+        String[] array = new String[150];
+        int i=0;
+        try {
+
+            br = new BufferedReader(new FileReader(csvFile));
+            while ((line = br.readLine()) != null) {
+
+                // use comma as separator
+                array[i] = (line.split(cvsSplitBy))[0];
+                i++;
+
+//                System.out.println(array[0]);
+
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+            return array;
+    }
+}
+
+
 
 public class CSVUtil {
 
