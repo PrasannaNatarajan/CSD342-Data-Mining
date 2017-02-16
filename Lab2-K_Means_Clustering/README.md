@@ -15,4 +15,5 @@ Think of this as a design problem. Try to solve a problem with it.
 ### To Do
 - Write Output to a csv file
 - Write some visualization code
+- If possible try and use python for visualizations
 
