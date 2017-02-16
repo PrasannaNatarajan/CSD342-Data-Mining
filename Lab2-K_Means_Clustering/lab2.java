@@ -9,27 +9,23 @@ public class lab2 {
 	
 	//Number of Clusters. This metric should be related to the number of points
     private int NUM_CLUSTERS = 3;    
-    //Number of Points
-    private int NUM_POINTS = 7;
-    //Min and Max X and Y
-    private static final int MIN_COORDINATE = -90;
-    private static final int MAX_COORDINATE = 90;
+    
+    
 	
     private ArrayList<Point> points;
     private ArrayList<Cluster> clusters;
 	
     public lab2(){
-    	points = new ArrayList();
-    	clusters = new ArrayList();
+    	points = new ArrayList<Point>();
+    	clusters = new ArrayList<Cluster>();
     }
     
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Point p1 = new Point(2,2);
+		Point p1 = new Point(3,4);
 		Point p2 = new Point(1,1);
 		double dist = euc_dist(p1,p2);
 		System.out.println(dist);
-		
 		ArrayList<Point> all_points= new ArrayList<Point>();
 		
 		try {
@@ -39,7 +35,6 @@ public class lab2 {
 			while(data.readRecord()){
 				Point temp = new Point(Double.parseDouble(data.get("lat")),Double.parseDouble(data.get("lng")));
 				all_points.add(temp);
-				//System.out.println(temp.get_x()+", "+temp.get_y());
 			}
 			lab2 kmeans = new lab2();
 			
@@ -71,8 +66,8 @@ public class lab2 {
 		
 	}
 	
-	static double euc_dist(Point p1, Point p2){		
-		return Math.pow(Math.pow(p2.get_x()-p1.get_x(),2)+Math.pow(p2.get_y()-p1.get_y(), 2),1/2);
+	static double euc_dist(Point p1, Point p2){	
+		return Math.sqrt(Math.pow(p2.get_x()-p1.get_x(),2)+Math.pow(p2.get_y()-p1.get_y(), 2));
 	}
 	
 	//The process to calculate the K Means, with iterating method.
@@ -82,6 +77,7 @@ public class lab2 {
         
         // Add in new data, one at a time, recalculating centroids with each new one. 
         while(!finish) {
+        	
         	
         	ArrayList<Point> lastCentroids = getCentroids();
         	
@@ -102,10 +98,10 @@ public class lab2 {
         	}
         	System.out.println("#################");
         	System.out.println("Iteration: " + iteration);
-        	System.out.println("Centroid distances: " + distance);
+        	System.out.println("Centroid distances: " + distance); 
         	plotClusters();
-        	        	
-        	if(distance == 0) {
+        	       	
+        	if(distance < 4) {
         		finish = true;
         	}
         }
@@ -119,7 +115,7 @@ public class lab2 {
     }
     
     private ArrayList<Point> getCentroids() {
-    	ArrayList<Point> centroids = new ArrayList(NUM_CLUSTERS);
+    	ArrayList<Point> centroids = new ArrayList<Point>(NUM_CLUSTERS);
     	for(Cluster cluster : clusters) {
     		Point aux = cluster.getCentroid();
     		Point point = new Point(aux.get_x(),aux.get_y());
@@ -139,13 +135,17 @@ public class lab2 {
             for(int i = 0; i < NUM_CLUSTERS; i++) {
             	Cluster c = clusters.get(i);
                 distance = euc_dist(point, c.getCentroid());
+                System.out.println("distance= "+distance+" "+i);
                 if(distance < min){
                     min = distance;
                     cluster = i;
+                    System.out.println("here"+i);
                 }
             }
             point.setClusterId(cluster);
             clusters.get(cluster).add_members(point);
+            System.out.println("added"+cluster);
+            
         }
     }
     
