@@ -3,21 +3,21 @@
 Think of this as a design problem. Try to solve a problem with it.
 
 - Distance Algorithm
-  - Least Squares
+  - Least Squares (done)
   - Manhattan
 - Residual Sum of Squares for "goodness"
   - rss threshold
 - Termination condition
   - time based
   - judgement based
-  - rss threshold
+  - rss threshold (done)
 
-
----
-
----
-
-
+### To Do
+- Write Output to a csv file
+- Write some visualization code
+- If possible try and use python for visualizations
+- Make all inputs, flags and get it from the terminal 
+- Give option for manhattan distance
 
 ### Github Code
 
@@ -25,11 +25,7 @@ Think of this as a design problem. Try to solve a problem with it.
 
 ### Visualisation
 
-- ​
-
-
-
-
+- ​Python?
 
 ### Number of Clusters
 
@@ -50,8 +46,6 @@ Curious? [This paper](http://link.springer.com/article/10.1007%2FBF02294245) be
 
 Since the algorithm stops in a local minimum, the initial position of the clusters is very important
 
-
-
 ### Datasets
 
 - https://edureka.wistia.com/medias/eea6j441fs/download?media_file_id=76016491
@@ -59,7 +53,3 @@ Since the algorithm stops in a local minimum, the initial position of the cluste
 - http://archive.ics.uci.edu/ml/
 
 - http://kaggle.com
-
-  ​
-
-  ​
