@@ -120,29 +120,38 @@ public class Lab2 {
  }
 
  private void assignCluster() {
-  double max = Double.MAX_VALUE;
-  double min = max;
-  int cluster = 0;
-  double distance = 0.0;
-
-  for (Point point: points) {
-   min = max;
-   for (int i = 0; i < NUM_CLUSTERS; i++) {
-    Cluster c = clusters.get(i);
-    distance = euc_dist(point, c.getCentroid());
-    System.out.println("distance= " + distance + " " + i);
-    if (distance < min) {
-     min = distance;
-     cluster = i;
-     System.out.println("here" + i);
+        double max = Double.MAX_VALUE;
+        double min = max; 
+        int cluster = 0;                 
+        double distance = 0.0;
+        
+        for(Cluster c: clusters){
+        	c.flag=0;
+        }
+        
+        for(Point point : points) {
+        	min = max;
+            for(int i = 0; i < NUM_CLUSTERS; i++) {
+            	Cluster c = clusters.get(i);
+                distance = euc_dist(point, c.getCentroid());
+                System.out.println("distance= "+distance+" "+i);
+                if(distance < min){
+                    min = distance;
+                    cluster = i;
+                    System.out.println("here"+i);
+                }
+            }
+            point.setClusterId(cluster);
+            if(clusters.get(cluster).flag == 0){
+            	clusters.get(cluster).setMembers(new ArrayList<Point>());
+            	clusters.get(cluster).flag = 1;
+            }
+            clusters.get(cluster).add_members(point);
+            System.out.println("added"+cluster);
+            
+        }
+        
     }
-   }
-   point.setClusterId(cluster);
-   clusters.get(cluster).add_members(point);
-   System.out.println("added" + cluster);
-
-  }
- }
 
  private void calculateCentroids() {
   for (Cluster cluster: clusters) {

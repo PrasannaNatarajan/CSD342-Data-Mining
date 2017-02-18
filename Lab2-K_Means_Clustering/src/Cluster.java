@@ -6,6 +6,7 @@ public class Cluster {
 	private ArrayList<Point> members;
 	private Point centroid;
 	private int id;
+    int flag;
 	ArrayList<Point> get_members(){
 		return this.members;
 	}
@@ -14,6 +15,7 @@ public class Cluster {
 		this.id = id;
 		this.members = new ArrayList<Point>();
 		this.centroid = null;
+        flag = 0;
 	}
 	
 	public ArrayList<Point> getMembers(){
