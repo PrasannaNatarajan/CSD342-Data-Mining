@@ -1,5 +1,11 @@
 ## K-Means Clustering
 
+**Output:**
+
+![image](worldmap_clusters.png)
+
+---
+
 Think of this as a design problem. Try to solve a problem with it.
 
 - Distance Algorithm

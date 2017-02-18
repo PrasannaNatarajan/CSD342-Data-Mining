@@ -3,11 +3,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import com.csvreader.CsvReader;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+import lab2.PlotClusters;
 
-public class Lab2 {
+public class Lab2{
 
  //Number of Clusters. This metric should be related to the number of points
- private int NUM_CLUSTERS;
+ private static int NUM_CLUSTERS;
  private ArrayList < Point > points;
  private ArrayList < Cluster > clusters;
 
@@ -26,15 +29,40 @@ public class Lab2 {
   ArrayList < Point > all_points = readDataFile("C:\\Users\\vishg\\Documents\\NetBeansProjects\\Lab2\\src\\lab2\\input.csv");
   Lab2 kmeans = new Lab2(all_points, 10);
   kmeans.calculate();
+//  printClusters();     
+  new PlotClusters("Clusters").plot(kmeans.createDataset());
 
  }
+ 
+   private XYSeriesCollection createDataset() {
+    XYSeriesCollection result = new XYSeriesCollection();
+    
+    XYSeries series = new XYSeries("centroids");
+    for(int i=0; i<NUM_CLUSTERS; i++){
+        series.add(clusters.get(i).getCentroid().get_x(),clusters.get(i).getCentroid().get_y() );
+    }
+    result.addSeries(series);
+
+    for(int i=0; i<NUM_CLUSTERS; i++){
+        Cluster c = clusters.get(i);
+         series = new XYSeries("Cluster_"+i);
+        ArrayList<Point> pt = c.getMembers();
+        for (int j = 0; j < pt.size(); j++) {
+            series.add(pt.get(j).get_x(),pt.get(j).get_y() );
+        }
+    result.addSeries(series);
+    }
+    
+    return result;
+}
+
 
  public void initClusters() {
   for (int i = 0; i < this.NUM_CLUSTERS; i++) {
    Cluster cluster = new Cluster(i);
    Random rand = new Random();
    int r = rand.nextInt(7);
-   System.out.println("random =" + r);
+//   System.out.println("random =" + r);
    Point centroid = this.points.get(r);
    cluster.setCentroid(centroid);
    this.clusters.add(cluster);
@@ -49,7 +77,7 @@ public class Lab2 {
    data.setSkipEmptyRecords(true);
    data.readHeaders();
    while (data.readRecord()) {
-    Point temp = new Point(Double.parseDouble(data.get("lat")), Double.parseDouble(data.get("lng")));
+    Point temp = new Point(Double.parseDouble(data.get("lng")), Double.parseDouble(data.get("lat")));
     all_points.add(temp);
    }
   } catch (FileNotFoundException e) {
@@ -91,10 +119,10 @@ public class Lab2 {
    for (int i = 0; i < lastCentroids.size(); i++) {
     distance += euc_dist(lastCentroids.get(i), currentCentroids.get(i));
    }
-   System.out.println("#################");
-   System.out.println("Iteration: " + iteration);
-   System.out.println("Centroid distances: " + distance);
-   plotClusters();
+//   System.out.println("#################");
+//   System.out.println("Iteration: " + iteration);
+//   System.out.println("Centroid distances: " + distance);
+
 
    if (distance < 4) {
     finish = true;
@@ -102,7 +130,7 @@ public class Lab2 {
   }
  }
 
- private void plotClusters() {
+ private void printClusters() {
   for (int i = 0; i < NUM_CLUSTERS; i++) {
    Cluster c = clusters.get(i);
    c.printCluster();
@@ -134,11 +162,11 @@ public class Lab2 {
             for(int i = 0; i < NUM_CLUSTERS; i++) {
             	Cluster c = clusters.get(i);
                 distance = euc_dist(point, c.getCentroid());
-                System.out.println("distance= "+distance+" "+i);
+//                System.out.println("distance= "+distance+" "+i);
                 if(distance < min){
                     min = distance;
                     cluster = i;
-                    System.out.println("here"+i);
+//                    System.out.println("here"+i);
                 }
             }
             point.setClusterId(cluster);
@@ -147,7 +175,7 @@ public class Lab2 {
             	clusters.get(cluster).flag = 1;
             }
             clusters.get(cluster).add_members(point);
-            System.out.println("added"+cluster);
+//            System.out.println("added"+cluster);
             
         }
         

@@ -1,56 +1,64 @@
-# README - Lab 1 - Apriori
+# README - Lab 2 - KMeans
 
 ### **NAME**
 
-Apriori- Apriori algorithm for Association Rule Mining 
+K Means - K Means algorithm for Clustering.
 
 ### **SYNOPSIS**
 
-This is an implementation of apriori algorithm forassociation rule mining in Java.
+This is an implementation of k-means algorithm for clustering in Java.
+
+### **DATASET**
+
+- The data file can be provided through command line flag `-f <file_path>`.
+- It should be a CSV file with X and Y as first two columns.
 
 ### **COMPILATION**
 
-`javac –cp jcommon-1.0.23.jar:jfreechart-1.0.19.jar Apriori.java`
+`javac –cp jcommon-1.0.23.jar:jfreechart-1.0.19.jar Lab2.java`
 
 ### **RUN**
 
-`java Apriori –n <number of unique items> –q <totalquantity of items> –i <no. of items per transaction> –zf <zipffactor> -s <support threshold>`
+`java Lab2 –k <k clusters> –d <distance algorithm> -f <file_path> `
 
 All parameters are optional, if not specified, defaultvalues will be used.
 
- 
-
 ### **OPTIONS**
 
-- <num_unique_items>
+- <k_clusters>
 
-  - Integer input to define number of unique items. Default=15.Tested Input Range= {0,100}
+  - Integer input to define number of unique items. 
+    - Default=7.
+    - Tested Input Range= {0,100}
 
-- <total_quantity>
+- <distance_algorithm>
 
-  - Integer input to define total number of items.Default=100,000. Tested Input Range= {0,1000000}
+  - Integer input to define total number of items.
+    - Default=100,000. 
+    - Tested Input Range= {0,1000000}
 
-- <num_items_per_transaction>
+- <file_path>
 
-  - Integer input to define number of items per transaction.Default=10. Tested Input Range= {5,10}
-
-- <zipf_factor>
-
-  - Double input to define the Zipf Factor for frequencydistribution. Default=0.05 Input Range= {0,1}
-
-- <support>
-
-  - Float input to define the support threshold. Default=100Input Range= {20,600}
+  - Path of the data file.
 
   ​
 
 ### **Example**
 
-`*java Apriori -n 800 -q500000 -i 6 -zf 0.05 -s 200*`
+`java Lab2 -k 7 -d 1 -f input.csv`
 
 Any specifiers omitted by the user will use the defaultvalues during execution.
 
- 
+
+
+### **PERFORMANCE METRICS**
+
+When tested with a dataset of 10,000 cities of the world, 
+
+- the total memory usage was **105MB** and 
+- the execution time was **0.16 seconds**
+
+
 
 ### **CONTRIBUTORS**
 

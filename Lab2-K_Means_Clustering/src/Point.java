@@ -35,7 +35,7 @@ public class Point{
 	}
 	
 	public String printPoint(){
-		return this.get_x()+" "+this.get_y();
+		return this.get_x()+", "+this.get_y();
 	}
 	
 }
