@@ -25,23 +25,21 @@ All parameters are optional, if not specified, defaultvalues will be used.
 
 ### **OPTIONS**
 
-- <k_clusters>
+- k_clusters
 
   - Integer input to define number of unique items. 
     - Default=7.
     - Tested Input Range= {0,100}
-
-- <distance_algorithm>
+- distance_algorithm
 
   - Integer input to define total number of items.
     - Default=100,000. 
     - Tested Input Range= {0,1000000}
 
-- <file_path>
+- file_path
 
   - Path of the data file.
 
-  ​
 
 ### **Example**
 
@@ -49,11 +47,9 @@ All parameters are optional, if not specified, defaultvalues will be used.
 
 Any specifiers omitted by the user will use the defaultvalues during execution.
 
-
-
 ### **PERFORMANCE METRICS**
 
-When tested with a dataset of 10,000 cities of the world, 
+When tested with a dataset of 7000 cities of the world, 
 
 - the total memory usage was **105MB** and 
 - the execution time was **0.16 seconds**
