@@ -17,6 +17,8 @@ Think of this as a design problem. Try to solve a problem with it.
 - Write some visualization code (done)
 - Make all inputs, flags and get it from the terminal 
 - Give option for manhattan distance
+- Monitor time and memory the program requires ( I don't know how to check memory?)
+- Try more data sets
 
 ### Github Code
 
