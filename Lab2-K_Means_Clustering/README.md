@@ -19,11 +19,12 @@ Think of this as a design problem. Try to solve a problem with it.
   - rss threshold (done)
 
 ### To Do
-- Write Output to a csv file
-- Write some visualization code
-- If possible try and use python for visualizations
+- Write Output to a csv file (done)
+- Write some visualization code (done)
 - Make all inputs, flags and get it from the terminal 
 - Give option for manhattan distance
+- Monitor time and memory the program requires ( I don't know how to check memory?)
+- Try more data sets
 
 ### Github Code
 
