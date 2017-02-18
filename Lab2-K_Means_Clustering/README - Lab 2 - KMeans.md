@@ -21,7 +21,7 @@ This is an implementation of k-means algorithm for clustering in Java.
 
 `java Lab2 –k <k clusters> –d <distance algorithm> -f <file_path> `
 
-All parameters are optional, if not specified, defaultvalues will be used.
+All parameters are optional, if not specified, default values will be used.
 
 ### **OPTIONS**
 
@@ -45,7 +45,7 @@ All parameters are optional, if not specified, defaultvalues will be used.
 
 `java Lab2 -k 7 -d 1 -f input.csv`
 
-Any specifiers omitted by the user will use the defaultvalues during execution.
+Any specifiers omitted by the user will use the default values during execution.
 
 ### **PERFORMANCE METRICS**
 
