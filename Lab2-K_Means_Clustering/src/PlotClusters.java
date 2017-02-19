@@ -67,9 +67,6 @@ public class PlotClusters extends ApplicationFrame{
       getContentPane().add(chartPanel);
       
       this.pack();
-      this.setVisible(true);
-      
-      
+      this.setVisible(true);      
  }   
 }
-

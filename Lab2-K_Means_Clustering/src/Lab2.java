@@ -27,9 +27,9 @@ public class Lab2{
   /* Add all points & Initialise K random clusters */
   /* Run KMeans algorithm on the dataset */
   ArrayList < Point > all_points = readDataFile("C:\\Users\\vishg\\Documents\\NetBeansProjects\\Lab2\\src\\lab2\\input.csv");
-  Lab2 kmeans = new Lab2(all_points, 10);
+  Lab2 kmeans = new Lab2(all_points, 9);
   kmeans.calculate();
-//  printClusters();     
+//  kmeans.printClusters();     
   new PlotClusters("Clusters").plot(kmeans.createDataset());
 
  }
@@ -39,7 +39,8 @@ public class Lab2{
     
     XYSeries series = new XYSeries("centroids");
     for(int i=0; i<NUM_CLUSTERS; i++){
-        series.add(clusters.get(i).getCentroid().get_x(),clusters.get(i).getCentroid().get_y() );
+        System.out.println(clusters.get(i).getCentroid().get_x()+", "+clusters.get(i).getCentroid().get_y() );
+        series.add(clusters.get(i).getCentroid().get_x(),clusters.get(i).getCentroid().get_y());
     }
     result.addSeries(series);
 
@@ -122,7 +123,8 @@ public class Lab2{
 //   System.out.println("#################");
 //   System.out.println("Iteration: " + iteration);
 //   System.out.println("Centroid distances: " + distance);
-
+    
+    new PlotClusters("Clusters").plot(this.createDataset());
 
    if (distance < 4) {
     finish = true;
