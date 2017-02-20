@@ -2,10 +2,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+
 import com.csvreader.CsvReader;
+
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import lab2.PlotClusters;
+
 
 public class Lab2{
 
@@ -13,7 +15,7 @@ public class Lab2{
  private static int NUM_CLUSTERS;
  private ArrayList < Point > points;
  private ArrayList < Cluster > clusters;
-
+ private static int distance_algo = 0;
  public Lab2(ArrayList < Point > all_points, int NUM_CLUSTERS) {
   this.NUM_CLUSTERS = NUM_CLUSTERS;
   this.points = all_points;
@@ -26,8 +28,26 @@ public class Lab2{
   /* Read all the spatial points from the dataset into the program */
   /* Add all points & Initialise K random clusters */
   /* Run KMeans algorithm on the dataset */
-  ArrayList < Point > all_points = readDataFile("C:\\Users\\vishg\\Documents\\NetBeansProjects\\Lab2\\src\\lab2\\input.csv");
-  Lab2 kmeans = new Lab2(all_points, 9);
+  
+	 /*input arguments*/
+	 int num_clusters = 3;
+	 String filename = "input.csv";
+	 for(int i=0;i<args.length;i++){
+     	
+     	switch(args[i]){
+     	case "-k" : num_clusters = Integer.parseInt(args[++i]);break;
+     	case "-f" : filename = args[++i];break;
+     	case "-d" : distance_algo = Integer.parseInt(args[++i]);break; 
+     	default : break;
+     	}
+     }	 
+	 String dis = "Eucledian";
+	 if(distance_algo == 1){
+		 dis = "Manhattan";
+	 }
+  System.out.println("The inputs are : number of clusters = "+num_clusters+"\n filename = "+filename+"\n distance_algorithm = "+dis); 
+  ArrayList < Point > all_points = readDataFile(filename);
+  Lab2 kmeans = new Lab2(all_points, num_clusters);
   kmeans.calculate();
 //  kmeans.printClusters();     
   new PlotClusters("Clusters").plot(kmeans.createDataset());
@@ -65,6 +85,7 @@ public class Lab2{
    int r = rand.nextInt(7);
 //   System.out.println("random =" + r);
    Point centroid = this.points.get(r);
+   
    cluster.setCentroid(centroid);
    this.clusters.add(cluster);
   }
@@ -90,8 +111,11 @@ public class Lab2{
  }
 
 
- static double euc_dist(Point p1, Point p2) {
-  return Math.sqrt(Math.pow(p2.get_x() - p1.get_x(), 2) + Math.pow(p2.get_y() - p1.get_y(), 2));
+ static double distance_func(Point p1, Point p2) {
+	 if(distance_algo == 1)
+		 return Math.abs(p2.get_x()-p1.get_x()) + Math.abs(p2.get_y()-p1.get_y());
+	 else
+		 return Math.sqrt(Math.pow(p2.get_x() - p1.get_x(), 2) + Math.pow(p2.get_y() - p1.get_y(), 2));
  }
 
  //The process to calculate the K Means, with iterating method.
@@ -118,7 +142,7 @@ public class Lab2{
    //Calculates total distance between new and old Centroids
    double distance = 0;
    for (int i = 0; i < lastCentroids.size(); i++) {
-    distance += euc_dist(lastCentroids.get(i), currentCentroids.get(i));
+    distance += distance_func(lastCentroids.get(i), currentCentroids.get(i));
    }
 //   System.out.println("#################");
 //   System.out.println("Iteration: " + iteration);
@@ -163,7 +187,7 @@ public class Lab2{
         	min = max;
             for(int i = 0; i < NUM_CLUSTERS; i++) {
             	Cluster c = clusters.get(i);
-                distance = euc_dist(point, c.getCentroid());
+                distance = distance_func(point, c.getCentroid());
 //                System.out.println("distance= "+distance+" "+i);
                 if(distance < min){
                     min = distance;
