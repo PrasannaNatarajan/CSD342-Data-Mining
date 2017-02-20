@@ -1,3 +1,14 @@
+/*
+ This is the submission for the graded lab assignment #2, which consists of implementation of k-means algorithm.
+ The algorithm has been implemented in Java v1.7.
+ This implementation has been successfully tested for up to 1000000 elements. 
+ Inputs  : the number of clusters, the dataset as a csv file and the distance metric.
+ Outputs : all the data points assigned to a cluster and a graph which shows the cluster heads and the points.
+ AUTHORS
+ Atish Majumdar      : 1410110081
+ Prasanna Natarajan  : 1410110298
+ Vishal Guaba        : 1410110501
+*/
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -79,16 +90,28 @@ public class Lab2{
 
 
  public void initClusters() {
+  int flag = 0;
   for (int i = 0; i < this.NUM_CLUSTERS; i++) {
-   Cluster cluster = new Cluster(i);
+   flag = 0;
+   
    Random rand = new Random();
    int r = rand.nextInt(7);
-//   System.out.println("random =" + r);
    Point centroid = this.points.get(r);
-   
+   for(int j=0;j<i;j++){
+	   if(this.clusters.get(j).getCentroid().equals(centroid)){
+		   flag = 1;
+		   break;		   
+	   }
+   }
+   if(flag == 1){
+	   i--;
+	   continue;
+   }
+   Cluster cluster = new Cluster(i);
    cluster.setCentroid(centroid);
    this.clusters.add(cluster);
   }
+  System.out.println("the size of clusters = "+this.clusters.size());
  }
 
 
@@ -118,12 +141,11 @@ public class Lab2{
 		 return Math.sqrt(Math.pow(p2.get_x() - p1.get_x(), 2) + Math.pow(p2.get_y() - p1.get_y(), 2));
  }
 
- //The process to calculate the K Means, with iterating method.
+ //function to calculate K Means.
  public void calculate() {
   boolean finish = false;
   int iteration = 0;
-
-  // Add in new data, one at a time, recalculating centroids with each new one. 
+ 
   while (!finish) {
 
 
@@ -144,13 +166,10 @@ public class Lab2{
    for (int i = 0; i < lastCentroids.size(); i++) {
     distance += distance_func(lastCentroids.get(i), currentCentroids.get(i));
    }
-//   System.out.println("#################");
-//   System.out.println("Iteration: " + iteration);
-//   System.out.println("Centroid distances: " + distance);
     
     new PlotClusters("Clusters").plot(this.createDataset());
 
-   if (distance < 4) {
+   if (distance == 0) { // vishal do something about the stopping condition here this will probably take a long time to end
     finish = true;
    }
   }
@@ -188,11 +207,9 @@ public class Lab2{
             for(int i = 0; i < NUM_CLUSTERS; i++) {
             	Cluster c = clusters.get(i);
                 distance = distance_func(point, c.getCentroid());
-//                System.out.println("distance= "+distance+" "+i);
                 if(distance < min){
                     min = distance;
                     cluster = i;
-//                    System.out.println("here"+i);
                 }
             }
             point.setClusterId(cluster);
@@ -201,7 +218,6 @@ public class Lab2{
             	clusters.get(cluster).flag = 1;
             }
             clusters.get(cluster).add_members(point);
-//            System.out.println("added"+cluster);
             
         }
         
