@@ -114,7 +114,7 @@ public class Lab2{
   System.out.println("the size of clusters = "+this.clusters.size());
  }
 
-
+// vishal also write comments for each function
  public static ArrayList < Point > readDataFile(String filePath) {
   ArrayList < Point > all_points = new ArrayList < Point > ();
   try {
