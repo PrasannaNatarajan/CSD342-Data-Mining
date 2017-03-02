@@ -23,7 +23,7 @@ All parameters are optional, if not specified, default values will be used.
 
 - k_clusters - Integer input to define number of clusters. 
 
-  - Default=7.
+  - Default=6.
   - Tested Input Range= {0,100}
 - distance_algorithm - Integer input to define which distance algorithm to use.
 
@@ -39,7 +39,7 @@ All parameters are optional, if not specified, default values will be used.
 
 ### **EXAMPLE**
 
-`java Lab2 -k 7 -d 1 -f input.csv`
+`java Lab2 -k 6 -d 1 -f input.csv`
 
 Any specifiers omitted by the user will use the default values during execution.
 
