@@ -1,12 +1,8 @@
-# README - Lab 2 - KMeans
+# README - Lab 2 - K Means
 
-### **NAME**
+### **DESCRIPTION**
 
-K Means - K Means algorithm for Clustering.
-
-### **SYNOPSIS**
-
-This is an implementation of k-means algorithm for clustering in Java.
+K Means algorithm for Clustering in Java
 
 ### **DATASET**
 
@@ -15,7 +11,7 @@ This is an implementation of k-means algorithm for clustering in Java.
 
 ### **COMPILATION**
 
-`javac –cp jcommon-1.0.23.jar:jfreechart-1.0.19.jar Lab2.java`
+`javac –cp jcommon-1.0.23.jar:jfreechart-1.0.19.jar Lab2.java Cluster.java Point.java PlotCluster.java`
 
 ### **RUN**
 
@@ -25,25 +21,25 @@ All parameters are optional, if not specified, default values will be used.
 
 ### **OPTIONS**
 
-- k_clusters
+- k_clusters - Integer input to define number of clusters. 
 
-  - Integer input to define number of unique items. 
-    - Default=7.
-    - Tested Input Range= {0,100}
-- distance_algorithm
+  - Default=6.
+  - Tested Input Range= {0,100}
+- distance_algorithm - Integer input to define which distance algorithm to use.
 
-  - Integer input to define total number of items.
-    - Default=100,000. 
-    - Tested Input Range= {0,1000000}
+  - Default=0. 
+  - Input Range= {0,1}
+  - "0" stands for eucledian distance
+  - "1" stands for manhattan distance
 
 - file_path
 
   - Path of the data file.
 
 
-### **Example**
+### **EXAMPLE**
 
-`java Lab2 -k 7 -d 1 -f input.csv`
+`java Lab2 -k 6 -d 1 -f input.csv`
 
 Any specifiers omitted by the user will use the default values during execution.
 
