@@ -1,0 +1,52 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+Creating the table and writing it to a csv file for question1
+```{r}
+StudentID <- 1410110001:1410111000
+DepartmentID <- rep(1:10,100)
+CGPA <- runif(1000,4,10)
+inp <- cbind(StudentID,DepartmentID,CGPA)
+write.csv(inp,"input.csv")
+```
+
+Reading from the csv file and finding the solution to question 1
+```{r}
+data <- read.csv("input.csv")
+```
+1.a
+```{r}
+percentageGreaterThan7.5 <- nrow(data[data$CGPA>7.5,])/nrow(data) *100
+print(percentageGreaterThan7.5)
+
+```
+1.b
+```{r}
+percentageBet7.5and8.5 <- print(nrow(data[(data$CGPA-7.5) * (8.5-data$CGPA)>0,])/nrow(data) *100)
+```
+1.c
+```{r}
+DepID <- 2
+d1<-(data[data$DepartmentID == DepID,])
+mean(d1[["CGPA"]])
+```
+1.d
+```{r}
+d1[sample(1:nrow(d1),runif(1,min = 0, max = nrow(d1))),"CGPA"] <- NA
+# without na.rm 
+mean(d1[["CGPA"]])
+# with na.rm
+mean(d1[["CGPA"]],na.rm = T)
+```
+1.e
+```{r}
+# have no clue what to do
+```
+1.f
+```{r}
+plot(data$CGPA)
+```
+
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
