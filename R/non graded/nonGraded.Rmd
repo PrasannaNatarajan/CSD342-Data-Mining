@@ -1,7 +1,15 @@
 ---
-title: "R Notebook"
-output: html_notebook
+title: "Non Graded Assignment"
+output:
+  html_notebook: default
+  html_document: default
 ---
+Group Members:
+Atish Majumdar
+Prasanna Natarajan
+Vishal Guaba
+
+
 Creating the table and writing it to a csv file for question1
 ```{r}
 StudentID <- 1410110001:1410111000
@@ -39,14 +47,31 @@ mean(d1[["CGPA"]])
 # with na.rm
 mean(d1[["CGPA"]],na.rm = T)
 ```
-1.e
-```{r}
-# have no clue what to do
-```
 1.f
 ```{r}
 plot(data$CGPA)
 ```
+2
+```{r}
+## used data.frame(),data.matrix() , read.table( ), read.csv(),lapply( ), sapply( ), tapply( ), mapply( ), split( )
+## Not sure what the deliverable will be
+```
+
+3. Reading from a PDF
+```{r}
+library(tm)
+files <- list.files(pattern = "pdf$")
+Rpdf <- readPDF(control = list(text = "-layout"))
+corpus <- VCorpus(URISource(files[1]), 
+      readerControl = list(reader = Rpdf))
+corpus.array <- content(content(corpus)[[1]]) ## Store each line in an array
+textFreq <- slam::row_sums(TermDocumentMatrix(corpus))
+df <- as.data.frame(as.table(textFreq))
+```
+3.1
+```{r}
+df
+df[which.min(df[,2])]
+```
 
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
