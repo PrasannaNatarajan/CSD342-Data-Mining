@@ -15,6 +15,6 @@ shinyServer(function(input, output) {
   })
   output$donut <-renderPlotly({
     source('~/Studies/Semester 6/Data mining/labs/lab1/CSD342-Data-Mining/R/graded lab/makeDonut.R')
-    makeDonut(input$state,input$parameters)
+    makeDonut(input$years,input$state,input$parameters)
   })
 })

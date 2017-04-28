@@ -8,8 +8,24 @@ library(leaflet)
 library(scales)
 
 makeMap <- function(years,input_para){
+  print(years)
+  if(years == "C:\\Users\\prasanna\\Documents\\Studies\\Semester 6\\Data mining\\labs\\lab1\\CSD342-Data-Mining\\R\\graded lab\\clean_pollution.csv"){
+    if(exists("df2016")){
+      df <- df2016
+      print("here 2016")
+    }
+  }
+  else if(years == "C:\\Users\\prasanna\\Documents\\Studies\\Semester 6\\Data mining\\labs\\lab1\\CSD342-Data-Mining\\R\\graded lab\\2000.csv"){
+    if(exists("df2000")){
+      df <- df2000
+      print("here 2012")
+    }
+  }
+  else{
+    df <- read.csv(years)
+    print("inside else")
+  }
   
-  df <- read.csv(years)
   
   state_dat <- statePreprocess(df,input_para)
   
@@ -18,6 +34,7 @@ makeMap <- function(years,input_para){
   state_dat$GEOID <- formatC(state_dat$GEOID, width = 2, format = "d", flag = "0")
   if(!exists("us.map")){
     us.map <- readOGR(dsn = "C:/Users/prasanna/Documents/Studies/Semester 6/Data mining/labs/lab1/CSD342-Data-Mining/R/graded lab/tl_2016_us_state", layer = "tl_2016_us_state", stringsAsFactors = FALSE)  
+    print("here us.map")  
   }
   
   
